@@ -13,11 +13,12 @@ public class BookLendingController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<BookLending>>> GetLendings()
+    public async Task<ActionResult<IEnumerable<BookLendingDTO>>> GetLendings()
     {
         return await _context.BookLendings
             .Include(bl => bl.Book)
             .Include(bl => bl.User)
+            .Select(bl => BookLendingDTO.BookLending2DTO(bl))
             .ToListAsync();
     }
 
@@ -42,11 +43,13 @@ public class BookLendingController : ControllerBase
             return BadRequest("User not available.");
 
         book.IsAvailable = false;
-        BookLending bl = new BookLending();
-        bl.BookId = bookId;
-        bl.UserId = userId;
+        BookLending bl = new()
+        {
+            BookId = bookId,
+            UserId = userId,
 
-        bl.LendDate = DateTime.Today;
+            LendDate = DateTime.Today
+        };
         _context.BookLendings.Add(bl);
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetLending), new { id = bl.Id }, bl);
