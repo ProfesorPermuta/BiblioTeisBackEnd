@@ -19,7 +19,6 @@ public class UserDTO
                 Id = u.Id,
                 Name = u.Name,
                 Email = u.Email,
-                PasswordHash = u.PasswordHash,
                 DateJoined = u.DateJoined,
                 ProfilePicture = u.ProfilePicture,
                 BookLendings = new List<BookLendingDTO>()
@@ -44,7 +43,6 @@ public class UserDTO
                 Id = u.Id,
                 Name = u.Name,
                 Email = u.Email,
-                PasswordHash = u.PasswordHash,
                 DateJoined = u.DateJoined,
                 ProfilePicture = u.ProfilePicture,
                 BookLendings = null
