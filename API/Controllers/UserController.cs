@@ -58,4 +58,15 @@ public class UsersController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+
+    [HttpPost("login")]
+    public async Task<ActionResult<UserDTO>> Login(LoginForm login)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == login.Email & u.PasswordHash == login.Password);
+
+        if(user == null)
+            return NotFound();
+        return Ok(UserDTO.User2DTO(user));
+    }
 }
+
