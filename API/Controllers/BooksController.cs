@@ -22,7 +22,7 @@ public class BooksController : ControllerBase
     public async Task<ActionResult<Book>> GetBook(int id)
     {
         var book = await _context.Books
-            .Include(b => b.BookLendings)
+            .Include(b => b.BookLendings!)
             .ThenInclude(bl => bl.User)
             .FirstOrDefaultAsync(b => b.Id == id);
         if (book == null)

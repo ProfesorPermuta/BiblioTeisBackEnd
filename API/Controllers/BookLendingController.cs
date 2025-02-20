@@ -25,7 +25,10 @@ public class BookLendingController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<BookLending>> GetLending(int id)
     {
-        var lending = await _context.BookLendings.FindAsync(id);
+        var lending = await _context.BookLendings
+            .Include(bl => bl.Book)
+            .Include(bl => bl.User)
+            .FirstOrDefaultAsync(bl => bl.Id == id);
         if (lending == null)
             return NotFound();
         return lending;
@@ -43,13 +46,13 @@ public class BookLendingController : ControllerBase
             return BadRequest("User not available.");
 
         book.IsAvailable = false;
-        BookLending bl = new()
-        {
-            BookId = bookId,
-            UserId = userId,
-
-            LendDate = DateTime.Today
-        };
+        BookLending bl =
+            new()
+            {
+                BookId = bookId,
+                UserId = userId,
+                LendDate = DateTime.Today
+            };
         _context.BookLendings.Add(bl);
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetLending), new { id = bl.Id }, bl);

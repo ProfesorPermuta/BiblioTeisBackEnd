@@ -28,7 +28,7 @@ public class UserDTO
         {
             foreach (BookLending bl in u.BookLendings)
             {
-                ud.BookLendings.Add(BookLendingDTO.BookLending2DTONoChild(bl));
+                ud.BookLendings.Add(BookLendingDTO.BookLending2DTO(bl));
             }
         }
 

@@ -19,12 +19,17 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<User>> GetUser(int id)
+    public async Task<ActionResult<UserDTO>> GetUser(int id)
     {
-        var user = await _context.Users.FindAsync(id);
+        var user = await _context.Users
+            .Include(u => u.BookLendings!)
+            .ThenInclude(bl => bl.Book)
+            .FirstOrDefaultAsync(u => u.Id == id);
+
         if (user == null)
             return NotFound();
-        return user;
+
+        return UserDTO.User2DTO(user);
     }
 
     [HttpPost]
@@ -62,11 +67,12 @@ public class UsersController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<UserDTO>> Login(LoginForm login)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == login.Email & u.PasswordHash == login.Password);
+        var user = await _context.Users.FirstOrDefaultAsync(
+            u => u.Email == login.Email & u.PasswordHash == login.Password
+        );
 
-        if(user == null)
+        if (user == null)
             return NotFound();
         return Ok(UserDTO.User2DTO(user));
     }
 }
-

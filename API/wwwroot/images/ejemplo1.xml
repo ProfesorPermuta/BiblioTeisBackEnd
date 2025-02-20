@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE libro [
+	<!ELEMENT libro (capitulo*)>
+	<!ELEMENT capitulo (titulo, contenido, resumen)>
+	<!ELEMENT titulo (#PCDATA)>
+	<!ELEMENT contenido (#PCDATA)>
+	<!ELEMENT resumen (#PCDATA)>
+]>
+<libro>
+	<capitulo>
+		<titulo>Capítulo A</titulo>
+		<contenido>contenido del Capítulo A</contenido>
+		<resumen>Resumen 1</resumen>
+	</capitulo>
+	<capitulo>
+		<titulo>Capítulo B</titulo>
+		<contenido>contenido del Capítulo B</contenido>
+		<resumen>Resumen 2</resumen>
+	</capitulo>
+</libro> 
